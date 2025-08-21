@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil Pengguna</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+  <header class="bg-white shadow p-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="#" class="text-xl font-bold text-red-600">ShopHere</a>
+      <nav class="flex gap-4 text-sm font-medium text-gray-700">
+        <a href="homepage.html" class="hover:text-red-500">Home</a>
+        <a href="keranjang.html" class="hover:text-red-500">Keranjang</a>
+        <a href="profile.html" class="text-red-600">Profil</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-3xl mx-auto p-6 mt-6 bg-white rounded shadow">
+    <h1 class="text-2xl font-bold mb-6">Profil Pengguna</h1>
+
+    <div class="flex flex-col items-center mb-16">
+      <img src="https://via.placeholder.com/120" alt="Foto Profil" class="w-28 h-28 rounded-full border mb-2 object-cover" />
+      <label class="bg-gray-200 text-sm px-3 py-1 rounded cursor-pointer hover:bg-gray-300">
+        Ubah Foto
+        <input type="file" class="hidden" />
+      </label>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label class="block mb-1 font-semibold">Nama Lengkap</label>
+        <input type="text" value="Arthur" class="w-full border px-4 py-2 rounded" />
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">Email</label>
+        <input type="email" value="arthurrafli@gmail.com" class="w-full border px-4 py-2 rounded" />
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">Nomor Telepon</label>
+        <input type="tel" value="0812-3456-7890" class="w-full border px-4 py-2 rounded" />
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">Alamat</label>
+       <input type="alamat" value="jl.masak depok" class="w-full border px-4 py-2 rounded" />
+      </div>
+    </div>
+
+    <div class="mt-6 text-right">
+      <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Simpan Perubahan</button>
+    </div>
+  </main>
+
+</body>
+</html>

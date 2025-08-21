@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <header class="bg-red-600 text-white p-4 text-center text-xl font-bold">
+    Pembayaran
+  </header>
+
+  <main class="p-6 max-w-3xl mx-auto">
+    <div class="bg-white p-6 rounded shadow space-y-4">
+      <h2 class="text-lg font-bold">Ringkasan Pembelian</h2>
+      <div id="checkout-list" class="space-y-2"></div>
+      <p class="text-right font-semibold">Total: <span id="checkout-total">$0</span></p>
+      <hr>
+      <h2 class="text-lg font-bold mt-4">Informasi Pembeli</h2>
+      <form onsubmit="submitForm(event)" class="space-y-4">
+        <input type="text" placeholder="Nama Lengkap" required class="w-full p-2 border rounded">
+        <input type="text" placeholder="Alamat Pengiriman" required class="w-full p-2 border rounded">
+        <input type="tel" placeholder="Nomor Telepon" required class="w-full p-2 border rounded">
+        <button class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">Bayar Sekarang</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const listEl = document.getElementById('checkout-list');
+    const totalEl = document.getElementById('checkout-total');
+
+    let total = 0;
+    cart.forEach(item => {
+      const row = document.createElement('div');
+      row.className = 'flex justify-between text-sm';
+      row.innerHTML = `<span>${item.title} x${item.quantity}</span><span>$${(item.price * item.quantity).toFixed(2)}</span>`;
+      listEl.appendChild(row);
+      total += item.price * item.quantity;
+    });
+    totalEl.textContent = `$${total.toFixed(2)}`;
+
+    function submitForm(e) {
+      e.preventDefault();
+      alert('Pembayaran berhasil! Terima kasih.');
+      localStorage.removeItem('cart');
+      window.location.href = 'homepage.html';
+    }
+  </script>
+
+</body>
+</html>

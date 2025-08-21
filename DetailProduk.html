@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Produk</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <a href="#" class="text-xl font-bold text-red-600">ShopHere</a>
+    <nav class="flex gap-4 text-sm font-medium text-gray-700">
+      <a href="ladingpage.html" class="hover:text-red-500">Home</a>
+      <a href="keranjang.html" class="hover:text-red-500">Keranjang (<span id="cart-count">0</span>)</a>
+      <a href="Checkout.html" class="hover:text-red-500">Checkout</a>
+    </nav>
+  </header>
+
+  <main class="p-6 max-w-4xl mx-auto">
+    <div id="product-detail" class="bg-white p-6 rounded shadow"></div>
+  </main>
+
+  <script>
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('cart-count').textContent = count;
+    }
+
+    updateCartCount();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    fetch(`https://fakestoreapi.com/products/${productId}`)
+      .then(res => res.json())
+      .then(product => {
+        const detail = document.getElementById('product-detail');
+        detail.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <img src="${product.image}" class="w-full max-h-96 object-contain" alt="${product.title}">
+            <div>
+              <h1 class="text-2xl font-bold mb-2">${product.title}</h1>
+              <p class="text-red-600 font-semibold text-xl mb-4">$${product.price}</p>
+              <p class="mb-6 text-gray-700">${product.description}</p>
+              <div class="flex gap-4">
+                <button onclick="addToCart(${product.id}, '${product.title}', '${product.image}', ${product.price}, '${product.description.replace(/'/g, "\'")}')" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Tambahkan ke Keranjang</button>
+                <button onclick="buyNow(${product.id}, '${product.title}', '${product.image}', ${product.price}, '${product.description.replace(/'/g, "\'")}')" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Beli Sekarang</button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+    function addToCart(id, title, image, price, description) {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existing = cart.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ id, title, image, price, quantity: 1, description });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+      alert('Produk ditambahkan ke keranjang!');
+    }
+
+    function buyNow(id, title, image, price, description) {
+      const singleProduct = [{ id, title, image, price, quantity: 1, description }];
+      localStorage.setItem('cart', JSON.stringify(singleProduct));
+      window.location.href = 'Checkout.html';
+    }
+
+    window.addEventListener('storage', updateCartCount);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keranjang</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <a href="#" class="text-xl font-bold text-red-600">ShopHere</a>
+    <nav class="flex gap-4 text-sm font-medium text-gray-700">
+      <a href="homepage.html" class="hover:text-red-500">Home</a>
+      <a href="#" class="hover:text-red-500">Keranjang</a>
+    </nav>
+  </header>
+
+  <main class="p-6 max-w-3xl mx-auto">
+    <div class="bg-white p-6 rounded shadow">
+      <h2 class="text-xl font-bold mb-4">Keranjang Belanja</h2>
+      <div id="cart-items" class="space-y-4"></div>
+      <p class="text-right font-bold mt-4">Total: <span id="total-price">$0</span></p>
+      <div class="text-right mt-6">
+        <a href="Checkout.html" class="inline-block bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700">Lanjut ke Pembayaran</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsEl = document.getElementById('cart-items');
+    const totalEl = document.getElementById('total-price');
+    let total = 0;
+
+    function renderCart() {
+      cartItemsEl.innerHTML = '';
+      total = 0;
+
+      if (cart.length === 0) {
+        cartItemsEl.innerHTML = '<p class="text-center text-gray-600">Keranjang kosong.</p>';
+      } else {
+        cart.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'flex justify-between items-center border p-3 rounded';
+          div.innerHTML = `
+            <div class="flex items-center gap-4">
+              <img src="${item.image}" class="w-16 h-16 object-contain" alt="${item.title}">
+              <div>
+                <h3 class="font-semibold">${item.title}</h3>
+                <p class="text-sm text-gray-600">$${item.price} x ${item.quantity}</p>
+              </div>
+            </div>
+            <button onclick="removeItem(${index})" class="text-red-600 hover:text-red-800 px-3 py-1 border border-red-600 rounded">Hapus</button>
+          `;
+          cartItemsEl.appendChild(div);
+          total += item.price * item.quantity;
+        });
+      }
+
+      totalEl.textContent = `$${total.toFixed(2)}`;
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+  </script>
+
+</body>
+</html>
